@@ -6,7 +6,7 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:26:43 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/22 23:08:37 by mjarboua         ###   ########.fr       */
+/*   Updated: 2022/12/22 23:52:22 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,13 @@ void	ft_handler(int sig, siginfo_t	*sa)
 	static int	e;
 	static int	pid;
 
-	if (!pid)
-		pid = sa->si_pid;
+	if (pid != sa->si_pid)
+	{
+		pid = 0;
+		e = 0;
+		c = 0b11111111;
+	}
+	pid = sa->si_pid;
 	if (sig == SIGUSR1)
 		c = c | 128 >> e;
 	else
@@ -31,6 +36,7 @@ void	ft_handler(int sig, siginfo_t	*sa)
 		if (c == '\0')
 		{
 			kill(pid, SIGUSR1);
+			// pid = 0;
 			// printf("\n%d\n", pid);
 		}
 		ft_putc(c);
