@@ -27,8 +27,8 @@ $(NAME) : $(OBJECTS_C) $(OBJECTS_S) $(OBJ) minitalk.h
 	@$(CC) $(FLAGS) $(OBJECTS_S) $(OBJ) -o server
 
 bonus : $(OBJECTS_C_B) $(OBJECTS_S_B) $(OBJ)
-		@$(CC) $(FLAGS) $(OBJECTS_C_B) $(OBJ) -o client_bonus
-		@$(CC) $(FLAGS) $(OBJECTS_S_B) $(OBJ) -o server_bonus
+	@$(CC) $(FLAGS) $(OBJECTS_C_B) $(OBJ) -o client_bonus
+	@$(CC) $(FLAGS) $(OBJECTS_S_B) $(OBJ) -o server_bonus
 
 all: $(NAME)
 

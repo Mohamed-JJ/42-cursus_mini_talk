@@ -6,7 +6,7 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:52:56 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/22 14:43:45 by mjarboua         ###   ########.fr       */
+/*   Updated: 2022/12/24 12:48:46 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	ft_sender(char *str, int pid)
 		i = 0;
 		while (i < 8)
 		{
-			if ((str[e] & 128 >> i) != 0)
-				kill(pid, SIGUSR1);
-			else
+			if ((str[e] & 128 >> i) == 0)
 				kill(pid, SIGUSR2);
+			else
+				kill(pid, SIGUSR1);
 			i++;
 			usleep(300);
 		}
@@ -43,4 +43,5 @@ int	main(int ac, char **av)
 	if (ac != 3)
 		return (ft_puts("not enough arguments"), 0);
 	ft_sender(av[2], atoi(av[1]));
+	return (0);
 }

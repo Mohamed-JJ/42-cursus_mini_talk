@@ -6,7 +6,7 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:52:56 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/22 23:08:02 by mjarboua         ###   ########.fr       */
+/*   Updated: 2022/12/23 19:56:42 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	ft_handler(int sig)
 {
 	(void)sig;
 	write(1, "received", 8);
+	exit(0);
 }
 
 void	ft_send_zero(int pid)
@@ -43,15 +44,14 @@ void	ft_sender(char *str, int pid)
 		i = 0;
 		while (i < 8)
 		{
-			if ((str[e] & 128 >> i) != 0)
-				kill(pid, SIGUSR1);
-			else
+			if ((str[e] & 128 >> i) == 0)
 				kill(pid, SIGUSR2);
+			else
+				kill(pid, SIGUSR1);
 			i++;
-			usleep(150);
+			usleep(300);
 		}
 		e++;
-		usleep(150);
 	}
 	ft_send_zero(pid);
 }
@@ -62,8 +62,9 @@ int	main(int ac, char **av)
 
 	if (ac != 3)
 		return (ft_puts("not enough arguments"), 0);
-	// printf("\n%d\n", getpid());
-	signal(SIGUSR1, ft_handler);
+	sa.__sigaction_u.__sa_handler = ft_handler;
+	sigaction(SIGUSR1, &sa, NULL);
 	ft_sender(av[2], atoi(av[1]));
-	usleep(200);
+	pause();
+	return (0);
 }

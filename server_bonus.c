@@ -6,18 +6,19 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:26:43 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/22 23:52:22 by mjarboua         ###   ########.fr       */
+/*   Updated: 2022/12/23 17:07:30 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	ft_handler(int sig, siginfo_t	*sa)
+void	ft_handler(int sig, siginfo_t *sa, void *ptr)
 {
 	static char	c = 0b11111111;
 	static int	e;
 	static int	pid;
 
+	(void)ptr;
 	if (pid != sa->si_pid)
 	{
 		pid = 0;
@@ -30,15 +31,10 @@ void	ft_handler(int sig, siginfo_t	*sa)
 	else
 		c = c ^ 128 >> e;
 	e++;
-
 	if (e == 8)
 	{
 		if (c == '\0')
-		{
 			kill(pid, SIGUSR1);
-			// pid = 0;
-			// printf("\n%d\n", pid);
-		}
 		ft_putc(c);
 		e = 0;
 		c = 0b11111111;
@@ -47,18 +43,18 @@ void	ft_handler(int sig, siginfo_t	*sa)
 
 int	main(void)
 {
-	struct sigaction	var;
+	struct sigaction	sa;
 	int					pid;
-	siginfo_t			sa;
 	int					c_pid;
 
 	pid = getpid();
-	var.sa_handler = (void *)ft_handler;
+	sa.sa_sigaction = ft_handler;
+	sa.sa_flags = SIGINFO;
 	mini_printf("this is the process id --> ", pid, '\n');
 	while (1)
 	{
-		sigaction(SIGUSR1, &var, NULL);
-		sigaction(SIGUSR2, &var, NULL);
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
 		pause();
 	}
 	return (0);
