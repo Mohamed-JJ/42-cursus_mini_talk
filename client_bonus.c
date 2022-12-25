@@ -6,7 +6,7 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:52:56 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/23 19:56:42 by mjarboua         ###   ########.fr       */
+/*   Updated: 2022/12/25 19:06:24 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_send_zero(int pid)
 	{
 		i++;
 		kill(pid, SIGUSR2);
-		usleep(100);
+		usleep(800);
 	}
 }
 
@@ -49,9 +49,10 @@ void	ft_sender(char *str, int pid)
 			else
 				kill(pid, SIGUSR1);
 			i++;
-			usleep(300);
+			usleep(600);
 		}
 		e++;
+		usleep(200);
 	}
 	ft_send_zero(pid);
 }
@@ -64,7 +65,7 @@ int	main(int ac, char **av)
 		return (ft_puts("not enough arguments"), 0);
 	sa.__sigaction_u.__sa_handler = ft_handler;
 	sigaction(SIGUSR1, &sa, NULL);
-	ft_sender(av[2], atoi(av[1]));
+	ft_sender(av[2], ft_atoi(av[1]));
 	pause();
 	return (0);
 }

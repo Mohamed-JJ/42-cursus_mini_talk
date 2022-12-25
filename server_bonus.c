@@ -6,26 +6,27 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:26:43 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/23 17:07:30 by mjarboua         ###   ########.fr       */
+/*   Updated: 2022/12/25 19:00:51 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	ft_handler(int sig, siginfo_t *sa, void *ptr)
+int	g_p_id;
+
+static void	ft_handler(int sig, siginfo_t *t, void *v)
 {
 	static char	c = 0b11111111;
 	static int	e;
-	static int	pid;
 
-	(void)ptr;
-	if (pid != sa->si_pid)
+	(void)v;
+	if (g_p_id != t->si_pid)
 	{
-		pid = 0;
+		g_p_id = 0;
 		e = 0;
 		c = 0b11111111;
 	}
-	pid = sa->si_pid;
+	g_p_id = t->si_pid;
 	if (sig == SIGUSR1)
 		c = c | 128 >> e;
 	else
@@ -34,8 +35,8 @@ void	ft_handler(int sig, siginfo_t *sa, void *ptr)
 	if (e == 8)
 	{
 		if (c == '\0')
-			kill(pid, SIGUSR1);
-		ft_putc(c);
+			kill(g_p_id, SIGUSR1);
+		write(1, &c, 1);
 		e = 0;
 		c = 0b11111111;
 	}
@@ -43,19 +44,15 @@ void	ft_handler(int sig, siginfo_t *sa, void *ptr)
 
 int	main(void)
 {
-	struct sigaction	sa;
-	int					pid;
-	int					c_pid;
+	struct sigaction	var;
 
-	pid = getpid();
-	sa.sa_sigaction = ft_handler;
-	sa.sa_flags = SIGINFO;
-	mini_printf("this is the process id --> ", pid, '\n');
+	g_p_id = getpid();
+	var.sa_flags = SA_SIGINFO;
+	var.sa_sigaction = &ft_handler;
+	mini_printf("this is the process id --> ", g_p_id, '\n');
+	sigaction(SIGUSR1, &var, NULL);
+	sigaction(SIGUSR2, &var, NULL);
 	while (1)
-	{
-		sigaction(SIGUSR1, &sa, NULL);
-		sigaction(SIGUSR2, &sa, NULL);
 		pause();
-	}
 	return (0);
 }

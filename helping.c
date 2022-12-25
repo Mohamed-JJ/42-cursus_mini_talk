@@ -6,7 +6,7 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 18:56:37 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/23 17:06:44 by mjarboua         ###   ########.fr       */
+/*   Updated: 2022/12/25 18:52:26 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,29 @@ void	mini_printf(char *s, int num, char c)
 	ft_putn(num);
 	ft_putc(' ');
 	ft_putc(c);
+}
+
+int	ft_atoi(char *str)
+{
+	int			i;
+	int			sign;
+	long long	result;
+
+	i = 0;
+	sign = 1;
+	result = 0;
+	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+		i++;
+	if (str[i] == '+' || str[i] == '-')
+	{
+		if (str[i++] == '-')
+			sign *= -1;
+	}
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result *= 10;
+		result = result + str[i++] - 48;
+	}
+	result *= sign;
+	return (result);
 }
