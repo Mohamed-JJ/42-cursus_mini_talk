@@ -6,7 +6,7 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 18:56:37 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/25 18:52:26 by mjarboua         ###   ########.fr       */
+/*   Updated: 2023/03/19 20:47:00 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,17 @@ int	ft_atoi(char *str)
 	}
 	result *= sign;
 	return (result);
+}
+
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t			i;
+
+	i = 0;
+	while (i < len)
+	{
+		((unsigned char *)b)[i] = (unsigned char)c;
+		i++;
+	}
+	return (b);
 }
