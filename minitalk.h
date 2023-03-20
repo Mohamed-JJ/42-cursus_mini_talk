@@ -6,7 +6,7 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/05 16:59:12 by mjarboua          #+#    #+#             */
-/*   Updated: 2023/03/19 20:47:08 by mjarboua         ###   ########.fr       */
+/*   Updated: 2023/03/20 18:40:04 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,5 @@ void	ft_puts(char *str);
 void	ft_putc(char c);
 void	mini_printf(char *s, int num, char c);
 int		ft_atoi(char *str);
-void	*ft_memset(void *b, int c, size_t len);
-
 
 #endif

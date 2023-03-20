@@ -6,7 +6,7 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:26:43 by mjarboua          #+#    #+#             */
-/*   Updated: 2023/03/19 21:55:06 by mjarboua         ###   ########.fr       */
+/*   Updated: 2023/03/20 18:53:21 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,32 @@ static int	count_bytes(int c)
 		return (1);
 }
 
+static void	wrong_p_id(char *str, unsigned char *c, int *e, int *f)
+{
+	int	i;
+
+	i = -1;
+	if (str)
+		while (str[++i])
+			str[i] = '\0';
+	*e = 0;
+	*c = 0b11111111;
+	*e = 0;
+	*f = 0;
+	g_p_id = 0;
+}
+
+static void	print_reset(unsigned char *c, int *f, int *x, int *h)
+{
+	if (*c == '\0')
+		kill(g_p_id, SIGUSR1);
+	write(1, c, 1);
+	*c = 0b11111111;
+	*f = 0;
+	*x = 0;
+	*h = 0;
+}
+
 static void	ft_handler(int sig, siginfo_t *t, void *v)
 {
 	static unsigned char	f = 0b11111111;
@@ -37,16 +63,7 @@ static void	ft_handler(int sig, siginfo_t *t, void *v)
 	(void)v;
 	if (g_p_id != t->si_pid)
 	{
-		g_p_id = 0;
-		e = 0;
-		f = 0b11111111;
-		counter = 0;
-		h = 0;
-		while (c[e])
-		{
-			c[e] = 0;
-			e++;
-		}
+		wrong_p_id(c, &f, &counter, &h);
 		e = 0;
 	}
 	g_p_id = t->si_pid;
@@ -54,22 +71,14 @@ static void	ft_handler(int sig, siginfo_t *t, void *v)
 	if (sig == SIGUSR1)
 		f = f | 128 >> e;
 	e++;
-	if (e == 8 && (f & 0x80) && h == 0)
+	if (e == 8 && (f & 128) && h == 0)
 		h = count_bytes(f);
 	if (e == 8)
 	{
 		c[counter++] = f;
 		if (!(f & 128))
-		{
-			if (f == '\0')
-				kill(g_p_id, SIGUSR1);
-			write(1, &f, 1);
-			e = 0;
-			f = 0b11111111;
-			h = 0;
-			counter = 0;
-		}
-		else if ((counter) == h)
+			print_reset(&f, &h, &counter, &e);
+		else if (counter == h)
 		{
 			if (f == '\0')
 				kill(g_p_id, SIGUSR1);
@@ -79,13 +88,9 @@ static void	ft_handler(int sig, siginfo_t *t, void *v)
 			f = 0b11111111;
 			h = 0;
 			counter = 0;
-			e = 0;
 		}
 		else
-		{
-			e = 0;
-			f = 0b1111111;
-		}
+			print_reset(&f, &h, &counter, &e);
 	}
 }
 
