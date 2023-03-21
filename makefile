@@ -10,7 +10,7 @@ SRC = helping.c
 SOURCE_C = client.c
 SOURCE_S = server.c
 SOURCE_C_B = client_bonus.c
-SOURCE_S_B = server_bonus.c
+SOURCE_S_B = server_bonus.c	utils_bonus.c \
 
 OBJ = $(SRC:.c=.o)
 

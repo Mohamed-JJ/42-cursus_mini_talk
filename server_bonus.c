@@ -6,102 +6,80 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:26:43 by mjarboua          #+#    #+#             */
-/*   Updated: 2023/03/20 18:53:21 by mjarboua         ###   ########.fr       */
+/*   Updated: 2023/03/21 19:29:39 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int	g_p_id;
-
-static int	count_bytes(int c)
-{
-	if (c == 240)
-		return (4);
-	else if (c == 192)
-		return (2);
-	else if (c == 224)
-		return (3);
-	else
-		return (1);
-}
-
-static void	wrong_p_id(char *str, unsigned char *c, int *e, int *f)
+static void	revert_to_original(char *str, unsigned char *c, t_mini *h)
 {
 	int	i;
 
-	i = -1;
+	i = 0;
 	if (str)
-		while (str[++i])
-			str[i] = '\0';
-	*e = 0;
+	{
+		while (str[i])
+		{
+			str[i] = 0;
+			i++;
+		}
+	}
 	*c = 0b11111111;
-	*e = 0;
-	*f = 0;
-	g_p_id = 0;
+	h->e = 0;
+	h->h = 0;
+	h->counter = 0;
 }
 
-static void	print_reset(unsigned char *c, int *f, int *x, int *h)
+static void	print_reset_string(char *c, unsigned char *f, t_mini *p)
 {
-	if (*c == '\0')
-		kill(g_p_id, SIGUSR1);
-	write(1, c, 1);
-	*c = 0b11111111;
-	*f = 0;
-	*x = 0;
-	*h = 0;
+	if (*f == '\0')
+		kill(p->g_p_id, SIGUSR1);
+	else
+		write(1, c, p->h);
+	revert_to_original(c, f, p);
+}
+
+void	if__full(char *c, unsigned char *f, t_mini *p)
+{
+	c[p->counter++] = *f;
+	if (!(*f & 0x80))
+		if_character(f, p);
+	else if ((p->counter) == p->h)
+		print_reset_string(c, f, p);
+	else
+	{
+		p->e = 0;
+		*f = 0b1111111;
+	}
 }
 
 static void	ft_handler(int sig, siginfo_t *t, void *v)
 {
 	static unsigned char	f = 0b11111111;
 	static char				c[4];
-	static int				e;
-	static int				h;
-	static int				counter;
+	static t_mini			p;
 
 	(void)v;
-	if (g_p_id != t->si_pid)
-	{
-		wrong_p_id(c, &f, &counter, &h);
-		e = 0;
-	}
-	g_p_id = t->si_pid;
-	f = f ^ 128 >> e;
-	if (sig == SIGUSR1)
-		f = f | 128 >> e;
-	e++;
-	if (e == 8 && (f & 128) && h == 0)
-		h = count_bytes(f);
-	if (e == 8)
-	{
-		c[counter++] = f;
-		if (!(f & 128))
-			print_reset(&f, &h, &counter, &e);
-		else if (counter == h)
-		{
-			if (f == '\0')
-				kill(g_p_id, SIGUSR1);
-			else
-				write(1, c, h);
-			e = 0;
-			f = 0b11111111;
-			h = 0;
-			counter = 0;
-		}
-		else
-			print_reset(&f, &h, &counter, &e);
-	}
+	if (p.g_p_id != t->si_pid)
+		revert_to_original(c, &f, &p);
+	p.g_p_id = t->si_pid;
+	do_bitwise_op(&f, &p, sig);
+	if (p.e == 8 && (f & 0x80) && p.h == 0)
+		p.h = count_bytes(f);
+	if (p.e == 8)
+		if__full(c, &f, &p);
 }
 
 int	main(void)
 {
 	struct sigaction	var;
+	t_mini				p;
 
-	g_p_id = getpid();
+	p.g_p_id = getpid();
 	var.sa_flags = SA_SIGINFO;
 	var.sa_sigaction = &ft_handler;
-	mini_printf("this is the process id --> ", g_p_id, '\n');
+	mini_printf("this is the process id --> ", p.g_p_id, '\n');
 	sigaction(SIGUSR1, &var, NULL);
 	sigaction(SIGUSR2, &var, NULL);
 	while (1)
