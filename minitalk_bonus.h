@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   minitalk_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/05 16:59:12 by mjarboua          #+#    #+#             */
-/*   Updated: 2023/04/03 16:05:42 by mjarboua         ###   ########.fr       */
+/*   Created: 2023/04/03 14:36:39 by mjarboua          #+#    #+#             */
+/*   Updated: 2023/04/03 16:12:18 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#ifndef MINITALK_BONUS_H
+# define MINITALK_BONUS_H
 
 # include <stdio.h>
 # include <unistd.h>
@@ -27,7 +27,7 @@ typedef struct l_mini
 	int	h;
 }				t_mini;
 
-char	*ft_itoa(int num); 
+char	*ft_itoa(int num);
 void	ft_puts(char *str);
 void	ft_putc(char c);
 void	mini_printf(char *s, int num, char c);

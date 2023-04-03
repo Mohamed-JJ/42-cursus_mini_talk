@@ -6,11 +6,11 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 19:20:43 by mjarboua          #+#    #+#             */
-/*   Updated: 2023/03/21 19:28:45 by mjarboua         ###   ########.fr       */
+/*   Updated: 2023/04/03 14:37:10 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 int	count_bytes(int c)
 {

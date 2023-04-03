@@ -6,11 +6,11 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:52:56 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/25 19:06:24 by mjarboua         ###   ########.fr       */
+/*   Updated: 2023/04/03 15:42:07 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 void	ft_handler(int sig)
 {
@@ -36,7 +36,6 @@ void	ft_sender(char *str, int pid)
 {
 	int		i;
 	int		e;
-	char	c;
 
 	e = 0;
 	while (str[e])

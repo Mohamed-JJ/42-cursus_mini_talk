@@ -6,11 +6,11 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:26:43 by mjarboua          #+#    #+#             */
-/*   Updated: 2023/03/21 19:29:39 by mjarboua         ###   ########.fr       */
+/*   Updated: 2023/04/03 16:12:30 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "minitalk_bonus.h"
 
 static void	revert_to_original(char *str, unsigned char *c, t_mini *h)
 {

@@ -6,7 +6,7 @@
 /*   By: mjarboua <mjarboua@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 22:26:43 by mjarboua          #+#    #+#             */
-/*   Updated: 2022/12/25 18:53:53 by mjarboua         ###   ########.fr       */
+/*   Updated: 2023/03/30 15:20:32 by mjarboua         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@ static void	ft_handler(int sig, siginfo_t *t, void *v)
 		c = 0b11111111;
 	}
 	g_p_id = t->si_pid;
+	c = c ^ 128 >> e;
 	if (sig == SIGUSR1)
 		c = c | 128 >> e;
-	else
-		c = c ^ 128 >> e;
 	e++;
 	if (e == 8)
 	{
